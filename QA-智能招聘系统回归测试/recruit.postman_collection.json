@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "智能招聘系统回归测试",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/recruit" }
+  ],
+  "item": [
+    {
+      "name": "求职者登录",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('登录跳转成功', function(){ pm.expect([200,302]).to.include(pm.response.code); });" ] } }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/login",
+        "header": [ { "key": "Content-Type", "value": "application/x-www-form-urlencoded" } ],
+        "body": { "mode": "urlencoded", "urlencoded": [
+          { "key": "username", "value": "seeker" },
+          { "key": "password", "value": "123456" }
+        ] }
+      }
+    },
+    {
+      "name": "岗位列表",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('岗位列表200', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": { "method": "GET", "url": "{{baseUrl}}/job?action=list" }
+    },
+    {
+      "name": "岗位热度排行",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('热度排行200', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": { "method": "GET", "url": "{{baseUrl}}/job?action=hot" }
+    },
+    {
+      "name": "岗位详情",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('详情200', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": { "method": "GET", "url": "{{baseUrl}}/job?action=detail&id=1" }
+    },
+    {
+      "name": "投递简历",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('投递跳转成功', function(){ pm.expect([200,302]).to.include(pm.response.code); });" ] } }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/application?action=apply",
+        "header": [ { "key": "Content-Type", "value": "application/x-www-form-urlencoded" } ],
+        "body": { "mode": "urlencoded", "urlencoded": [
+          { "key": "jobId", "value": "1" },
+          { "key": "content", "value": "本科，3年Java经验" }
+        ] }
+      }
+    },
+    {
+      "name": "我的投递",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('我的投递200', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": { "method": "GET", "url": "{{baseUrl}}/application?action=mine" }
+    },
+    {
+      "name": "越权访问企业审核(预期403)",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('求职者越权被拒403', function(){ pm.response.to.have.status(403); });" ] } }
+      ],
+      "request": { "method": "GET", "url": "{{baseUrl}}/enterprise?action=audit" }
+    },
+    {
+      "name": "参数类型不匹配(传字符串id)",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/application?action=apply",
+        "header": [ { "key": "Content-Type", "value": "application/x-www-form-urlencoded" } ],
+        "body": { "mode": "urlencoded", "urlencoded": [
+          { "key": "jobId", "value": "abc" },
+          { "key": "content", "value": "非法id测试" }
+        ] }
+      }
+    }
+  ]
+}

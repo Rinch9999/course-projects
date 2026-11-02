@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>简历项目总览 · 15 个项目</title>
+<style>
+  :root {
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --ink: #1a1d24;
+    --muted: #6b7280;
+    --line: #e7eaf0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  header {
+    padding: 40px 32px 28px;
+    background: linear-gradient(135deg, #3b5bdb 0%, #4c6ef5 55%, #748ffc 100%);
+    color: #fff;
+  }
+  header h1 { margin: 0 0 8px; font-size: 26px; letter-spacing: .5px; }
+  header p  { margin: 0; opacity: .92; font-size: 14px; }
+  .badge {
+    display: inline-block; margin-right: 6px; margin-top: 6px;
+    padding: 3px 10px; border-radius: 999px; font-size: 12px;
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35);
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 24px 64px; }
+  section { margin-bottom: 30px; }
+  .cat {
+    display: flex; align-items: center; gap: 10px; margin: 0 0 14px;
+    font-size: 18px; font-weight: 700;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px 16px 14px; display: flex; flex-direction: column;
+    transition: box-shadow .15s, transform .15s;
+  }
+  .card:hover { box-shadow: 0 8px 24px rgba(30,50,100,.10); transform: translateY(-2px); }
+  .card h3 { margin: 0 0 4px; font-size: 15.5px; }
+  .card .sub { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+  .tags { margin-bottom: 10px; }
+  .tag {
+    display: inline-block; padding: 2px 8px; margin: 0 5px 4px 0;
+    border-radius: 6px; font-size: 11.5px; color: #3b5bdb;
+    background: #eef2ff; border: 1px solid #dfe5ff;
+  }
+  .card p { margin: 0 0 6px; font-size: 13px; color: #3f4654; }
+  .card p b { color: #2a3140; }
+  .links { margin-top: auto; padding-top: 10px; }
+  .btn {
+    display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 12.5px;
+    text-decoration: none; margin-right: 8px; margin-top: 6px; font-weight: 600;
+  }
+  .btn-preview { background: #3b5bdb; color: #fff; }
+  .btn-preview:hover { background: #3450c4; }
+  .btn-ghost { border: 1px solid var(--line); color: #3f4654; background: #fafbfc; }
+  .btn-ghost:hover { background: #f1f3f7; }
+  footer { text-align: center; color: var(--muted); font-size: 12.5px; padding: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>简历项目总览</h1>
+  <p>15 个课设项目，按「简历名-项目名」扁平命名，对应后端 / 前端 / 数据分析 / 测试 / 运营 五份简历。</p>
+  <div>
+    <span class="badge">后端.pdf · 3 项</span>
+    <span class="badge">前端.pdf · 3 项</span>
+    <span class="badge">数据分析.pdf · 3 项</span>
+    <span class="badge">测试.pdf · 3 项</span>
+    <span class="badge">运营.pdf · 3 项</span>
+  </div>
+</header>
+
+<main>
+
+  <section>
+    <h2 class="cat"><span class="dot" style="background:#3b5bdb"></span>后端 Backend</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>图书管理系统</h3>
+        <p class="sub">后端.pdf · 项目 1</p>
+        <div class="tags"><span class="tag">Java</span><span class="tag">JDBC</span><span class="tag">MySQL</span></div>
+        <p><b>核心：</b>图书/读者/借阅增删改查、借书、还书、逾期统计</p>
+        <p><b>难点：</b>借还书 JDBC 事务一致性</p>
+        <div class="links"><a class="btn btn-ghost" href="Backend-图书管理系统/README.md">查看 README</a></div>
+      </div>
+      <div class="card">
+        <h3>智能招聘系统</h3>
+        <p class="sub">后端.pdf · 项目 2</p>
+        <div class="tags"><span class="tag">Servlet</span><span class="tag">JSP</span><span class="tag">MySQL</span></div>
+        <p><b>核心：</b>求职者/企业/管理员三角色权限、岗位发布、简历投递、企业审核</p>
+        <p><b>难点：</b>AuthFilter 权限拦截 + 复杂 SQL 热度排行</p>
+        <div class="links"><a class="btn btn-ghost" href="Backend-智能招聘系统/README.md">查看 README</a></div>
+      </div>
+      <div class="card">
+        <h3>社区物业管理系统</h3>
+        <p class="sub">后端.pdf · 项目 3</p>
+        <div class="tags"><span class="tag">SpringBoot</span><span class="tag">MyBatis</span><span class="tag">JWT</span></div>
+        <p><b>核心：</b>12 张表、报修工单流转、缴费账单、公告</p>
+        <p><b>难点：</b>联合索引 800ms→150ms + JWT 鉴权</p>
+        <div class="links"><a class="btn btn-ghost" href="Backend-社区物业管理系统/README.md">查看 README</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="cat"><span class="dot" style="background:#f59f00"></span>前端 Frontend</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>智能招聘系统前端</h3>
+        <p class="sub">前端.pdf · 项目 1</p>
+        <div class="tags"><span class="tag">JSP</span><span class="tag">Ajax</span><span class="tag">ECharts</span></div>
+        <p><b>核心：</b>表单校验、JSP 动态渲染 + Ajax 交互</p>
+        <p><b>难点：</b>ECharts 岗位热度/活跃度图表</p>
+        <div class="links"><a class="btn btn-preview" href="Frontend-智能招聘系统前端/demo.html">打开预览</a><a class="btn btn-ghost" href="Frontend-智能招聘系统前端/README.md">README</a></div>
+      </div>
+      <div class="card">
+        <h3>单词记忆卡片</h3>
+        <p class="sub">前端.pdf · 项目 2</p>
+        <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+        <p><b>核心：</b>卡片翻转、单词列表、背诵进度、生词收藏</p>
+        <p><b>难点：</b>preserve-3d 3D 翻转 + localStorage 持久化</p>
+        <div class="links"><a class="btn btn-preview" href="Frontend-单词记忆卡片/index.html">打开预览</a><a class="btn btn-ghost" href="Frontend-单词记忆卡片/README.md">README</a></div>
+      </div>
+      <div class="card">
+        <h3>校园活动报名 H5</h3>
+        <p class="sub">前端.pdf · 项目 3</p>
+        <div class="tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span></div>
+        <p><b>核心：</b>活动介绍、轮播图、报名表单、成功弹窗</p>
+        <p><b>难点：</b>媒体查询 + Flex 响应式 + localStorage</p>
+        <div class="links"><a class="btn btn-preview" href="Frontend-校园活动报名H5/index.html">打开预览</a><a class="btn btn-ghost" href="Frontend-校园活动报名H5/README.md">README</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="cat"><span class="dot" style="background:#12b886"></span>数据分析 Data Analysis</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>航班信息查询与检索</h3>
+        <p class="sub">数据分析.pdf · 项目 1</p>
+        <div class="tags"><span class="tag">Java</span><span class="tag">哈希</span><span class="tag">二分</span><span class="tag">排序</span></div>
+        <p><b>核心：</b>排序/查找/哈希实现航班高效检索</p>
+        <p><b>难点：</b>哈希索引 O(1)、二分 O(log n)</p>
+        <div class="links"><a class="btn btn-ghost" href="Data Analysis-航班信息查询与检索/README.md">查看 README</a></div>
+      </div>
+      <div class="card">
+        <h3>知乎热榜爬虫与 NLP</h3>
+        <p class="sub">数据分析.pdf · 项目 2</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">爬虫</span><span class="tag">Jieba</span><span class="tag">SnowNLP</span></div>
+        <p><b>核心：</b>爬取 Top50、清洗、分词、TF-IDF、情感分析</p>
+        <p><b>难点：</b>负面情感与热度峰值相关性验证</p>
+        <div class="links"><a class="btn btn-ghost" href="Data Analysis-知乎热榜爬虫与NLP/README.md">查看 README</a></div>
+      </div>
+      <div class="card">
+        <h3>机器学习项目</h3>
+        <p class="sub">数据分析.pdf · 项目 3</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">Pandas</span></div>
+        <p><b>核心：</b>预处理、特征工程、训练评估、对比多算法</p>
+        <p><b>难点：</b>特征缩放 + 参数调优选最优</p>
+        <div class="links"><a class="btn btn-ghost" href="Data Analysis-机器学习项目/README.md">查看 README</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="cat"><span class="dot" style="background:#fa5252"></span>测试 QA</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>智能招聘系统回归测试</h3>
+        <p class="sub">测试.pdf · 项目 1</p>
+        <div class="tags"><span class="tag">测试用例</span><span class="tag">Postman</span></div>
+        <p><b>核心：</b>三角色 50+ 用例、岗位/投递/审核回归</p>
+        <p><b>难点：</b>发现越权/参数类型 10+ 缺陷并闭环</p>
+        <div class="links"><a class="btn btn-ghost" href="QA-智能招聘系统回归测试/README.md">查看 README</a><a class="btn btn-ghost" href="QA-智能招聘系统回归测试/testcases.md">用例</a></div>
+      </div>
+      <div class="card">
+        <h3>知乎热榜数据清洗</h3>
+        <p class="sub">测试.pdf · 项目 2</p>
+        <div class="tags"><span class="tag">Python</span></div>
+        <p><b>核心：</b>2000+ 条文本去重/填充/过滤/短文本剔除</p>
+        <p><b>难点：</b>数据校验规则保证完整性一致性</p>
+        <div class="links"><a class="btn btn-ghost" href="QA-知乎热榜数据清洗/README.md">查看 README</a></div>
+      </div>
+      <div class="card">
+        <h3>社区物业接口测试</h3>
+        <p class="sub">测试.pdf · 项目 3</p>
+        <div class="tags"><span class="tag">Postman</span><span class="tag">接口</span></div>
+        <p><b>核心：</b>40+ 接口联调、登录/报修/缴费校验</p>
+        <p><b>难点：</b>慢查询定位 + 1000+ 条回归</p>
+        <div class="links"><a class="btn btn-ghost" href="QA-社区物业接口测试/README.md">查看 README</a><a class="btn btn-ghost" href="QA-社区物业接口测试/testcases.md">用例</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="cat"><span class="dot" style="background:#9775fa"></span>运营 Operations</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>智能招聘系统数据统计</h3>
+        <p class="sub">运营.pdf · 项目 1</p>
+        <div class="tags"><span class="tag">SQL</span><span class="tag">MySQL</span></div>
+        <p><b>核心：</b>岗位热度、企业活跃度、投递状态分布等 9 指标</p>
+        <p><b>难点：</b>LEFT JOIN + GROUP BY 复杂统计</p>
+        <div class="links"><a class="btn btn-ghost" href="Operations-智能招聘系统数据统计/sql/stats.sql">打开 SQL</a><a class="btn btn-ghost" href="Operations-智能招聘系统数据统计/README.md">README</a></div>
+      </div>
+      <div class="card">
+        <h3>知乎热榜 NLP 选题</h3>
+        <p class="sub">运营.pdf · 项目 2</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">SnowNLP</span><span class="tag">Jieba</span></div>
+        <p><b>核心：</b>热度趋势、情感占比、内容选题建议</p>
+        <p><b>难点：</b>负面情感与热度峰值相关性验证</p>
+        <div class="links"><a class="btn btn-ghost" href="Operations-知乎热榜NLP/content_insight.py">打开脚本</a><a class="btn btn-ghost" href="Operations-知乎热榜NLP/README.md">README</a></div>
+      </div>
+      <div class="card">
+        <h3>社区物业数据指标</h3>
+        <p class="sub">运营.pdf · 项目 3</p>
+        <div class="tags"><span class="tag">SQL</span><span class="tag">MySQL</span></div>
+        <p><b>核心：</b>报修统计、缴费分布、缴费趋势等 7 指标</p>
+        <p><b>难点：</b>Explain 联合索引 800ms→150ms</p>
+        <div class="links"><a class="btn btn-ghost" href="Operations-社区物业数据指标/sql/metrics.sql">打开 SQL</a><a class="btn btn-ghost" href="Operations-社区物业数据指标/README.md">README</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>简历项目运行手册详见根目录 README.md ｜ 前端项目可直接在浏览器在线预览</footer>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能招聘系统 - 前端演示</title>
+    <style>
+        :root {
+            --primary: #1f3b5c;
+            --bg: #f5f6fa;
+            --green: #2e7d32;
+            --orange: #ef6c00;
+            --red: #c62828;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; margin: 0; background: var(--bg); color: #333; }
+        .container { max-width: 900px; margin: 20px auto; padding: 20px; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+        .header h1 { margin: 0; color: var(--primary); font-size: 22px; }
+        .role-bar { display: flex; gap: 8px; }
+        .role-bar button { padding: 8px 14px; border: none; border-radius: 20px; cursor: pointer; background: #e8eef7; color: var(--primary); font-size: 14px; }
+        .role-bar button.active { background: var(--primary); color: #fff; }
+
+        .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .tabs button { padding: 8px 16px; border: none; cursor: pointer; background: #fff; color: #333; border-radius: 6px; font-size: 14px; }
+        .tabs button.active { background: var(--primary); color: #fff; }
+
+        .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .toolbar input, .toolbar select { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .toolbar input { flex: 1; min-width: 160px; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+        .job-card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.05); }
+        .job-card h3 { margin: 0 0 6px; color: var(--primary); font-size: 16px; }
+        .job-card .company { color: #888; font-size: 13px; margin-bottom: 8px; }
+        .job-card .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+        .job-card .tag { background: #e8eef7; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+        .job-card .salary { color: var(--orange); font-weight: 700; margin-bottom: 6px; }
+        .job-card .meta { color: #999; font-size: 12px; margin-bottom: 12px; }
+        .job-card button { width: 100%; padding: 8px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary); color: #fff; font-size: 14px; }
+        .job-card button.applied { background: #ccc; cursor: default; }
+
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background: #e8eef7; color: var(--primary); }
+
+        .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .stat-card { background: #fff; border-radius: 10px; padding: 16px; text-align: center; }
+        .stat-card b { display: block; font-size: 26px; color: var(--primary); }
+        .stat-card span { color: #888; font-size: 13px; }
+
+        .chart-box { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+        .chart-box h3 { margin: 0 0 12px; color: var(--primary); font-size: 16px; }
+        .bar-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+        .bar-item .label { width: 120px; text-align: right; color: #555; }
+        .bar-track { flex: 1; background: #eee; height: 20px; border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width .4s; }
+        .bar-item .val { width: 40px; color: var(--primary); font-weight: 700; }
+
+        .badge { padding: 2px 8px; border-radius: 4px; font-size: 12px; color: #fff; }
+        .badge.pending { background: var(--orange); }
+        .badge.viewed { background: #1565c0; }
+        .badge.interview { background: #6a1b9a; }
+        .badge.hired { background: var(--green); }
+
+        .empty { text-align: center; color: #aaa; padding: 24px 0; }
+        button.small { padding: 4px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; }
+        button.danger { background: #fdecea; color: var(--red); }
+        button.ok { background: var(--primary); color: #fff; }
+
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: none; align-items: center; justify-content: center; z-index: 99; }
+        .modal-box { background: #fff; padding: 24px; border-radius: 12px; width: 90%; max-width: 420px; max-height: 90vh; overflow: auto; }
+        .modal-box h3 { margin: 0 0 16px; color: var(--primary); }
+        .modal-box input, .modal-box textarea, .modal-box select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .modal-box .row { display: flex; gap: 8px; }
+        .modal-box .row input { flex: 1; }
+        .modal-box .btn-row { display: flex; gap: 8px; }
+        .modal-box .btn-row button { flex: 1; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .error { color: var(--red); font-size: 13px; min-height: 18px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <h1>智能招聘系统</h1>
+        <div class="role-bar">
+            <button id="roleJobseeker" class="active" onclick="setRole('jobseeker')">求职者</button>
+            <button id="roleCompany" onclick="setRole('company')">企业</button>
+            <button id="roleAdmin" onclick="setRole('admin')">管理员</button>
+        </div>
+    </header>
+
+    <div class="tabs" id="tabs"></div>
+
+    <!-- 求职者：岗位大厅 -->
+    <div id="view-jobs">
+        <div class="toolbar">
+            <input id="keyword" placeholder="搜索岗位名 / 公司 / 技能" oninput="renderJobs()">
+            <select id="category" onchange="renderJobs()">
+                <option value="">全部分类</option>
+                <option>技术</option>
+                <option>数据</option>
+                <option>产品</option>
+                <option>运营</option>
+            </select>
+            <select id="sort" onchange="renderJobs()">
+                <option value="hot">按热度</option>
+                <option value="salary">按薪资</option>
+            </select>
+        </div>
+        <div class="card-grid" id="jobGrid"></div>
+    </div>
+
+    <!-- 求职者：我的投递 -->
+    <div id="view-applications" style="display:none;">
+        <table>
+            <thead><tr><th>岗位</th><th>公司</th><th>投递时间</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody id="appTable"></tbody>
+        </table>
+    </div>
+
+    <!-- 企业：岗位管理 -->
+    <div id="view-company" style="display:none;">
+        <div class="toolbar">
+            <button class="small ok" onclick="openPublish()">+ 发布新岗位</button>
+        </div>
+        <table>
+            <thead><tr><th>岗位</th><th>分类</th><th>薪资</th><th>收到投递</th><th>操作</th></tr></thead>
+            <tbody id="companyTable"></tbody>
+        </table>
+    </div>
+
+    <!-- 管理员：数据统计 -->
+    <div id="view-admin" style="display:none;">
+        <div class="stat-cards" id="statCards"></div>
+        <div class="chart-box">
+            <h3>岗位热度排行（投递量）</h3>
+            <div id="hotChart"></div>
+        </div>
+        <div class="chart-box">
+            <h3>投递状态分布</h3>
+            <div id="statusChart"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 投递弹窗 -->
+<div class="modal" id="applyModal">
+    <div class="modal-box">
+        <h3 id="applyTitle">投递简历</h3>
+        <div class="row">
+            <input id="apName" placeholder="姓名">
+            <input id="apPhone" placeholder="手机号">
+        </div>
+        <input id="apEmail" placeholder="邮箱（选填）">
+        <textarea id="apResume" rows="4" placeholder="自我介绍 / 技能 / 项目经历"></textarea>
+        <p class="error" id="applyError"></p>
+        <div class="btn-row">
+            <button onclick="closeApply()" style="background:#eee;color:#333;">取消</button>
+            <button onclick="submitApply()">提交投递</button>
+        </div>
+    </div>
+</div>
+
+<!-- 发布岗位弹窗 -->
+<div class="modal" id="publishModal">
+    <div class="modal-box">
+        <h3>发布新岗位</h3>
+        <input id="pbTitle" placeholder="岗位名称">
+        <input id="pbCompany" placeholder="公司名称">
+        <div class="row">
+            <select id="pbCategory">
+                <option>技术</option><option>数据</option><option>产品</option><option>运营</option>
+            </select>
+            <input id="pbSalary" placeholder="薪资，如 12-20K">
+        </div>
+        <textarea id="pbDesc" rows="3" placeholder="岗位职责描述"></textarea>
+        <div class="btn-row">
+            <button onclick="closePublish()" style="background:#eee;color:#333;">取消</button>
+            <button onclick="publishJob()">发布</button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    var JOB_KEY = 'recruit_jobs_v2';
+    var APP_KEY = 'recruit_applications_v2';
+    var $ = function (id) { return document.getElementById(id); };
+
+    function loadJSON(key, fallback) {
+        try {
+            var v = JSON.parse(localStorage.getItem(key));
+            return v == null ? fallback : v;
+        } catch (e) { return fallback; }
+    }
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    var seedJobs = [
+        { id: 'j1', title: 'Java 后端开发工程师', company: '星辰科技', category: '技术', salary: '15-25K', tags: ['Java', 'SpringBoot', 'MySQL'], desc: '负责核心业务后端服务设计与开发。', applyCount: 42 },
+        { id: 'j2', title: '前端开发工程师', company: '云帆网络', category: '技术', salary: '12-20K', tags: ['Vue3', 'ECharts', 'JS'], desc: '负责 Web 前端页面与数据可视化开发。', applyCount: 35 },
+        { id: 'j3', title: '数据分析师', company: '数智咨询', category: '数据', salary: '14-22K', tags: ['Python', 'SQL', 'Pandas'], desc: '负责业务数据分析与报表建设。', applyCount: 28 },
+        { id: 'j4', title: '测试工程师', company: '云帆网络', category: '技术', salary: '10-18K', tags: ['Postman', 'Python', '用例设计'], desc: '负责接口测试、回归测试与缺陷跟进。', applyCount: 21 },
+        { id: 'j5', title: '产品经理', company: '创新工场', category: '产品', salary: '15-28K', tags: ['需求分析', '原型', 'PRD'], desc: '负责产品规划与需求落地。', applyCount: 30 },
+        { id: 'j6', title: '运营专员', company: '青柠传媒', category: '运营', salary: '8-15K', tags: ['内容运营', '数据分析'], desc: '负责内容运营与用户增长。', applyCount: 18 }
+    ];
+
+    var jobs = loadJSON(JOB_KEY, seedJobs);
+    var applications = loadJSON(APP_KEY, []);
+    var role = 'jobseeker';
+    var activeTab = 'jobs';
+    var applyingJobId = null;
+
+    function save() {
+        localStorage.setItem(JOB_KEY, JSON.stringify(jobs));
+        localStorage.setItem(APP_KEY, JSON.stringify(applications));
+    }
+
+    /* ---------- 视图与角色 ---------- */
+    function setRole(r) {
+        role = r;
+        $('roleJobseeker').classList.toggle('active', r === 'jobseeker');
+        $('roleCompany').classList.toggle('active', r === 'company');
+        $('roleAdmin').classList.toggle('active', r === 'admin');
+        activeTab = r === 'company' ? 'company' : r === 'admin' ? 'admin' : 'jobs';
+        renderTabs();
+        renderAll();
+    }
+
+    var TABS = {
+        jobseeker: [['jobs', '岗位大厅'], ['applications', '我的投递']],
+        company: [['company', '岗位管理']],
+        admin: [['admin', '数据统计']]
+    };
+
+    function renderTabs() {
+        $('tabs').innerHTML = TABS[role].map(function (t) {
+            return '<button class="' + (activeTab === t[0] ? 'active' : '') + '" onclick="switchTab(\'' + t[0] + '\')">' + t[1] + '</button>';
+        }).join('');
+    }
+
+    function switchTab(tab) {
+        activeTab = tab;
+        renderTabs();
+        renderAll();
+    }
+
+    function renderAll() {
+        ['view-jobs', 'view-applications', 'view-company', 'view-admin'].forEach(function (id) {
+            $(id).style.display = 'none';
+        });
+        if (activeTab === 'jobs') { $('view-jobs').style.display = 'block'; renderJobs(); }
+        else if (activeTab === 'applications') { $('view-applications').style.display = 'block'; renderApplications(); }
+        else if (activeTab === 'company') { $('view-company').style.display = 'block'; renderCompany(); }
+        else if (activeTab === 'admin') { $('view-admin').style.display = 'block'; renderAdmin(); }
+    }
+
+    /* ---------- 求职者：岗位大厅 ---------- */
+    function filteredJobs() {
+        var kw = $('keyword').value.trim().toLowerCase();
+        var cat = $('category').value;
+        var sort = $('sort').value;
+        var list = jobs.filter(function (j) {
+            var okCat = !cat || j.category === cat;
+            var okKw = !kw || (j.title + j.company + j.tags.join(' ')).toLowerCase().indexOf(kw) !== -1;
+            return okCat && okKw;
+        });
+        if (sort === 'salary') {
+            list.sort(function (a, b) { return parseSalary(b.salary) - parseSalary(a.salary); });
+        } else {
+            list.sort(function (a, b) { return b.applyCount - a.applyCount; });
+        }
+        return list;
+    }
+
+    function parseSalary(s) {
+        var m = String(s).match(/(\d+)/);
+        return m ? parseInt(m[1], 10) : 0;
+    }
+
+    function hasApplied(jobId) {
+        return applications.some(function (a) { return a.jobId === jobId; });
+    }
+
+    function renderJobs() {
+        var list = filteredJobs();
+        $('jobGrid').innerHTML = list.length ? list.map(function (j) {
+            var applied = hasApplied(j.id);
+            return '<div class="job-card">' +
+                '<h3>' + escapeHtml(j.title) + '</h3>' +
+                '<div class="company">' + escapeHtml(j.company) + '</div>' +
+                '<div class="tags">' + j.tags.map(function (t) { return '<span class="tag">' + escapeHtml(t) + '</span>'; }).join('') + '</div>' +
+                '<div class="salary">' + escapeHtml(j.salary) + '</div>' +
+                '<div class="meta">' + escapeHtml(j.desc) + '</div>' +
+                '<button class="' + (applied ? 'applied' : '') + '" ' + (applied ? 'disabled' : 'onclick="openApply(\'' + j.id + '\')"') + '>' +
+                (applied ? '已投递 · ' + j.applyCount + ' 人' : '投递简历 · ' + j.applyCount + ' 人') + '</button>' +
+                '</div>';
+        }).join('') : '<div class="empty">没有匹配的岗位</div>';
+    }
+
+    /* ---------- 投递 ---------- */
+    function openApply(jobId) {
+        applyingJobId = jobId;
+        var job = jobs.find(function (j) { return j.id === jobId; });
+        $('applyTitle').textContent = '投递简历 - ' + job.title;
+        $('apName').value = $('apPhone').value = $('apEmail').value = $('apResume').value = '';
+        $('applyError').textContent = '';
+        $('applyModal').style.display = 'flex';
+    }
+    function closeApply() { $('applyModal').style.display = 'none'; }
+
+    function submitApply() {
+        var name = $('apName').value.trim();
+        var phone = $('apPhone').value.trim();
+        var email = $('apEmail').value.trim();
+        var resume = $('apResume').value.trim();
+        if (!name) { $('applyError').textContent = '姓名不能为空'; return; }
+        if (!/^1[3-9]\d{9}$/.test(phone)) { $('applyError').textContent = '手机号格式不正确'; return; }
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('applyError').textContent = '邮箱格式不正确'; return; }
+        if (applications.some(function (a) { return a.jobId === applyingJobId && a.phone === phone; })) {
+            $('applyError').textContent = '您已投递过该岗位'; return;
+        }
+        var job = jobs.find(function (j) { return j.id === applyingJobId; });
+        applications.push({
+            id: String(Date.now() + Math.random()), jobId: job.id,
+            jobTitle: job.title, company: job.company,
+            name: name, phone: phone, email: email, resume: resume,
+            status: '待处理', time: new Date().toLocaleString()
+        });
+        job.applyCount += 1;
+        save();
+        closeApply();
+        renderJobs();
+    }
+
+    /* ---------- 我的投递 ---------- */
+    function renderApplications() {
+        $('appTable').innerHTML = applications.length ? applications.map(function (a) {
+            var cls = { '待处理': 'pending', '已查看': 'viewed', '面试中': 'interview', '已录用': 'hired' }[a.status] || 'pending';
+            return '<tr>' +
+                '<td>' + escapeHtml(a.jobTitle) + '</td>' +
+                '<td>' + escapeHtml(a.company) + '</td>' +
+                '<td>' + escapeHtml(a.time) + '</td>' +
+                '<td><span class="badge ' + cls + '">' + escapeHtml(a.status) + '</span></td>' +
+                '<td><button class="small danger" onclick="withdrawApp(\'' + a.id + '\')">撤销</button></td>' +
+                '</tr>';
+        }).join('') : '<tr><td colspan="5" class="empty">还没有投递记录</td></tr>';
+    }
+
+    function withdrawApp(id) {
+        if (!confirm('确认撤销该投递？')) return;
+        var a = applications.find(function (x) { return x.id === id; });
+        var job = jobs.find(function (j) { return j.id === a.jobId; });
+        if (job) job.applyCount = Math.max(job.applyCount - 1, 0);
+        applications = applications.filter(function (x) { return x.id !== id; });
+        save();
+        renderApplications();
+    }
+
+    /* ---------- 企业：岗位管理 ---------- */
+    function renderCompany() {
+        $('companyTable').innerHTML = jobs.length ? jobs.map(function (j) {
+            var count = applications.filter(function (a) { return a.jobId === j.id; }).length;
+            return '<tr>' +
+                '<td>' + escapeHtml(j.title) + '</td>' +
+                '<td>' + escapeHtml(j.category) + '</td>' +
+                '<td>' + escapeHtml(j.salary) + '</td>' +
+                '<td>' + count + ' 份</td>' +
+                '<td><button class="small ok" onclick="viewCandidates(\'' + j.id + '\')">查看投递</button></td>' +
+                '</tr>';
+        }).join('') : '<tr><td colspan="5" class="empty">还没有岗位，点击上方发布</td></tr>';
+    }
+
+    function viewCandidates(jobId) {
+        var job = jobs.find(function (j) { return j.id === jobId; });
+        var list = applications.filter(function (a) { return a.jobId === jobId; });
+        if (!list.length) { alert('该岗位暂无投递'); return; }
+        var text = list.map(function (a) {
+            return a.name + '（' + a.phone + '）' + a.status + ' - ' + a.resume;
+        }).join('\n---\n');
+        alert('【' + job.title + '】投递人数：' + list.length + '\n\n' + text);
+    }
+
+    function openPublish() { $('publishModal').style.display = 'flex'; }
+    function closePublish() { $('publishModal').style.display = 'none'; }
+
+    function publishJob() {
+        var title = $('pbTitle').value.trim();
+        var company = $('pbCompany').value.trim();
+        var category = $('pbCategory').value;
+        var salary = $('pbSalary').value.trim();
+        var desc = $('pbDesc').value.trim();
+        if (!title || !company || !salary) { alert('请填写岗位名称、公司和薪资'); return; }
+        jobs.push({
+            id: 'j' + Date.now(), title: title, company: company, category: category,
+            salary: salary, tags: [category], desc: desc || '暂无描述', applyCount: 0
+        });
+        save(); closePublish();
+        $('pbTitle').value = $('pbCompany').value = $('pbSalary').value = $('pbDesc').value = '';
+        renderCompany();
+    }
+
+    /* ---------- 管理员：数据统计 ---------- */
+    function renderAdmin() {
+        $('statCards').innerHTML =
+            statCard(jobs.length, '岗位总数') +
+            statCard(applications.length, '投递总数') +
+            statCard(new Set(applications.map(function (a) { return a.phone; })).size, '投递人数');
+
+        var sorted = jobs.slice().sort(function (a, b) { return b.applyCount - a.applyCount; });
+        $('hotChart').innerHTML = sorted.map(function (j) {
+            var max = sorted[0].applyCount || 1;
+            return barItem(j.title, j.applyCount, Math.round(j.applyCount / max * 100));
+        }).join('');
+
+        var statusCount = { '待处理': 0, '已查看': 0, '面试中': 0, '已录用': 0 };
+        applications.forEach(function (a) { statusCount[a.status] = (statusCount[a.status] || 0) + 1; });
+        var total = applications.length || 1;
+        var names = Object.keys(statusCount);
+        $('statusChart').innerHTML = names.map(function (s) {
+            return barItem(s, statusCount[s], Math.round(statusCount[s] / total * 100));
+        }).join('');
+    }
+
+    function statCard(val, label) {
+        return '<div class="stat-card"><b>' + val + '</b><span>' + label + '</span></div>';
+    }
+    function barItem(label, val, pct) {
+        return '<div class="bar-item"><span class="label">' + escapeHtml(label) + '</span>' +
+            '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>' +
+            '<span class="val">' + val + '</span></div>';
+    }
+
+    window.setRole = setRole;
+    window.switchTab = switchTab;
+    window.renderJobs = renderJobs;
+    window.openApply = openApply;
+    window.closeApply = closeApply;
+    window.submitApply = submitApply;
+    window.withdrawApp = withdrawApp;
+    window.viewCandidates = viewCandidates;
+    window.openPublish = openPublish;
+    window.closePublish = closePublish;
+    window.publishJob = publishJob;
+
+    renderTabs();
+    renderAll();
+})();
+</script>
+</body>
+</html>

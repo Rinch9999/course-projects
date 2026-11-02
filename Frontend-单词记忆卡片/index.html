@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词记忆卡片</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <h1>单词记忆卡片</h1>
+        <div class="stats">
+            <span>总词 <b id="statTotal">0</b></span>
+            <span>已记 <b id="statMemorized">0</b></span>
+            <span>待记 <b id="statRemain">0</b></span>
+            <span>生词 <b id="statHard">0</b></span>
+        </div>
+    </header>
+
+    <!-- 学习模式切换 -->
+    <div class="mode-bar">
+        <button id="modeAll" class="active" onclick="setMode('all')">全部</button>
+        <button id="modeReview" onclick="setMode('review')">复习未记</button>
+        <button id="modeHard" onclick="setMode('hard')">只看生词</button>
+        <button onclick="shuffle()">随机打乱</button>
+    </div>
+
+    <!-- 卡片 -->
+    <div class="card" id="card" onclick="flip()">
+        <div class="card-inner">
+            <div class="card-face card-front" id="cardFront">暂无单词，先添加一个吧</div>
+            <div class="card-face card-back" id="cardBack"></div>
+        </div>
+    </div>
+    <p class="card-hint">点击卡片翻转 · 快捷键：空格翻转 / ← → 切换</p>
+
+    <!-- 卡片操作 -->
+    <div class="actions">
+        <button onclick="prev()">上一张</button>
+        <button class="wrong" onclick="mark(false)">忘记了</button>
+        <button class="right" onclick="mark(true)">记住了</button>
+        <button onclick="collectHard()">收藏生词</button>
+        <button onclick="next()">下一张</button>
+    </div>
+
+    <!-- 新增单词 -->
+    <div class="add-box">
+        <input id="word" placeholder="单词（英文）">
+        <input id="meaning" placeholder="释义（中文）">
+        <button onclick="addCard()">添加</button>
+    </div>
+
+    <!-- 数据管理 -->
+    <div class="data-box">
+        <button onclick="exportData()">导出数据</button>
+        <button onclick="document.getElementById('importFile').click()">导入数据</button>
+        <input type="file" id="importFile" accept=".json" hidden onchange="importData(this)">
+    </div>
+
+    <!-- 单词列表 -->
+    <h2>单词列表</h2>
+    <ul id="wordList"></ul>
+
+    <!-- 生词本 -->
+    <h2>生词本</h2>
+    <ul id="hardList"></ul>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

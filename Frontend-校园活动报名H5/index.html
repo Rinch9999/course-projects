@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园活动报名</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <h1>校园活动报名</h1>
+        <p class="sub">选择感兴趣的活动，填写信息完成报名</p>
+    </header>
+
+    <!-- 活动切换 -->
+    <div class="tabs" id="tabs"></div>
+
+    <!-- 活动详情 -->
+    <section class="detail" id="detail"></section>
+
+    <!-- 报名表单 -->
+    <section class="form">
+        <h2>报名信息</h2>
+        <div class="row">
+            <input id="name" placeholder="姓名">
+            <input id="studentNo" placeholder="学号">
+        </div>
+        <div class="row">
+            <select id="college">
+                <option value="">选择学院</option>
+                <option>计算机学院</option>
+                <option>外国语学院</option>
+                <option>经济管理学院</option>
+                <option>机械工程学院</option>
+                <option>电子信息学院</option>
+            </select>
+        </div>
+        <div class="row">
+            <input id="phone" placeholder="手机号">
+            <input id="email" placeholder="邮箱（选填）">
+        </div>
+        <button onclick="submit()">提交报名</button>
+        <p id="error" class="error"></p>
+    </section>
+
+    <!-- 报名列表 -->
+    <section class="list">
+        <h2>已报名（<span id="count">0</span> 人）</h2>
+        <ul id="list"></ul>
+    </section>
+</div>
+
+<!-- 成功弹窗 -->
+<div id="successModal" class="modal" style="display:none;">
+    <div class="modal-box">
+        <h3>报名成功！</h3>
+        <p id="modalText"></p>
+        <button onclick="closeModal()">确定</button>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

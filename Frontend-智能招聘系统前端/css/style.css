@@ -1,0 +1,63 @@
+/* 智能招聘系统前端 · 全局样式 */
+:root {
+    --primary: #1f3b5c;
+    --bg: #f5f6fa;
+    --green: #2e7d32;
+    --orange: #ef6c00;
+    --red: #c62828;
+    --line: #e7eaf0;
+}
+
+* { box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; margin: 0; background: var(--bg); color: #333; }
+.container { max-width: 960px; margin: 20px auto; padding: 0 20px; }
+
+/* 顶部导航 */
+.header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.header h1 { margin: 0; color: var(--primary); font-size: 22px; }
+.header .nav { display: flex; gap: 8px; }
+.header .nav a { color: var(--primary); text-decoration: none; font-size: 14px; padding: 6px 12px; border-radius: 6px; background: #e8eef7; }
+.header .nav a:hover { background: #d5e0f0; }
+
+/* 登录页 */
+.login-box { width: 360px; margin: 80px auto; padding: 28px 24px; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.login-box h2 { margin: 0 0 20px; color: var(--primary); }
+.login-box label { display: block; margin-bottom: 14px; font-size: 14px; color: #555; }
+.login-box input { width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; margin-top: 6px; }
+.login-box button { width: 100%; padding: 10px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary); color: #fff; font-size: 15px; margin-top: 6px; }
+.role-hint { background: #f0f5ff; border: 1px solid #dfe9ff; border-radius: 6px; padding: 10px 12px; font-size: 12.5px; color: #48607f; line-height: 1.7; margin-bottom: 16px; }
+.role-hint b { color: var(--primary); }
+
+/* 工具栏 */
+.toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.toolbar input, .toolbar select { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+.toolbar input { flex: 1; min-width: 160px; }
+
+/* 表格 */
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); font-size: 14px; }
+th { background: #e8eef7; color: var(--primary); }
+tbody tr:hover { background: #fafbfd; }
+
+/* 徽章 */
+.badge { padding: 2px 8px; border-radius: 4px; font-size: 12px; color: #fff; }
+.badge.open { background: var(--green); }
+.badge.closed { background: #888; }
+.badge.applied { background: #ccc; }
+
+/* 按钮 */
+button { cursor: pointer; }
+.btn { padding: 6px 12px; border: none; border-radius: 6px; font-size: 13px; }
+.btn.primary { background: var(--primary); color: #fff; }
+.btn.ghost { background: #e8eef7; color: var(--primary); }
+.btn.danger { background: #fdecea; color: var(--red); }
+button:disabled { background: #ccc; cursor: default; }
+
+/* 图表 */
+.chart-box { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.chart-box h3 { margin: 0 0 12px; color: var(--primary); font-size: 16px; }
+.chart-box .chart { width: 100%; height: 360px; }
+
+/* 空态 / 错误 */
+.empty { text-align: center; color: #aaa; padding: 24px 0; }
+.error { color: var(--red); font-size: 13px; min-height: 18px; }

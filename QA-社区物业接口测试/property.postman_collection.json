@@ -1,0 +1,114 @@
+{
+  "info": {
+    "name": "社区物业管理系统接口测试",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "登录获取 token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('登录成功, 状态200', function(){ pm.response.to.have.status(200); });",
+              "var data = pm.response.json();",
+              "pm.collectionVariables.set('token', data.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/auth/login",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\"username\":\"owner1\",\"password\":\"123456\"}" }
+      }
+    },
+    {
+      "name": "提交报修工单",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('提交成功', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/repair",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\"typeId\":1,\"description\":\"水管漏水\"}" }
+      }
+    },
+    {
+      "name": "报修列表(状态=PENDING)",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('列表返回200', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/repair?status=PENDING&page=1&size=10",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ]
+      }
+    },
+    {
+      "name": "工单状态流转",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('流转成功', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/repair/1/status?status=ASSIGNED",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ]
+      }
+    },
+    {
+      "name": "缴费账单列表",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('账单列表200', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/payment",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ]
+      }
+    },
+    {
+      "name": "缴费",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('缴费成功', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/payment/1/pay",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ]
+      }
+    },
+    {
+      "name": "公告列表",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('公告列表200', function(){ pm.response.to.have.status(200); });" ] } }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/announcement",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ]
+      }
+    },
+    {
+      "name": "无 token 访问(预期401)",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('未授权401', function(){ pm.response.to.have.status(401); });" ] } }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/payment"
+      }
+    }
+  ]
+}
